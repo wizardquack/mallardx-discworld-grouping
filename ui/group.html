@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Discworld Grouping</title>
+  <link rel="stylesheet" href="group.css">
+  <script src="group.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <span class="title" id="title">Group</span>
+    <span class="spacer"></span>
+    <button class="refresh refresh-shields" id="refresh-shields" type="button"
+            aria-label="Refresh shields" title="Refresh shields (group shields)">
+      <span class="refresh-icon">🛡</span>
+    </button>
+    <button class="refresh" id="refresh" type="button"
+            aria-label="Refresh group status" title="Refresh group status">
+      <span class="refresh-icon">❤</span>
+    </button>
+  </header>
+  <main class="body" id="body">
+    <p class="empty" id="empty">Not in a group.</p>
+    <ul class="roster" id="roster"></ul>
+  </main>
+</body>
+</html>
