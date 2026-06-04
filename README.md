@@ -4,14 +4,6 @@ A Mallard bundled plugin for Discworld MUD. Shows the active group's
 roster (group name + member list) with per-member HP/GP bars in a
 compact iframe panel docked to the right.
 
-## Install (dev)
-
-```sh
-bash scripts/reinstall.sh
-```
-
-Then restart Mallard or toggle the plugin in the manager.
-
 ## What it does
 
 - Auto-tracks group join/leave events (yours and others').
@@ -32,9 +24,3 @@ Then restart Mallard or toggle the plugin in the manager.
 `[worlds] match = ["discworld.starturtle.net:*"]` — enabled by default
 on Discworld worlds; no-op elsewhere.
 
-## Design
-
-Design specs live in the [Mallard repo](https://github.com/wizardquack/mallard) under `docs/superpowers/specs/`:
-
-- Roster + HP/GP panel: `2026-05-28-discworld-grouping-design.md`
-- Shield row + cross-plugin event surface: `2026-05-28-discworld-group-shields-design.md`
