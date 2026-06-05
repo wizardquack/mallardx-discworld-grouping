@@ -1,8 +1,7 @@
 # Discworld Grouping
 
-A Mallard bundled plugin for Discworld MUD. Shows the active group's
-roster (group name + member list) with per-member HP/GP bars in a
-compact iframe panel docked to the right.
+Shows the active group's roster (group name + member list) with
+per-member HP/GP bars in a compact panel.
 
 ## What it does
 
@@ -19,8 +18,8 @@ compact iframe panel docked to the right.
   follow-up. State flows from `discworld-magic` via the cross-plugin
   `net.mallard.discworld.shield.up/.down` event surface.
 
-## Auto-enable
+# Cross-plugin communication
 
-`[worlds] match = ["discworld.starturtle.net:*"]` — enabled by default
-on Discworld worlds; no-op elsewhere.
-
+This plugin has an optional dependency on the discworld-magic plugin.
+If you have it, you will get richer information on shielding for each
+group member.
