@@ -1,24 +1,31 @@
+/* Plugin design tokens, derived from Mallard host theme tokens (pushed into
+ * the iframe's :root inline style via `set-theme`). Each `var(--host, hex)`
+ * chain resolves to the host's themed value when present and falls back to
+ * the original dark-theme hex otherwise — covering first paint (before the
+ * host's push arrives) and standalone-browser preview. `--bg`/`--fg`/`--border`
+ * are themed by the host overriding these stylesheet defaults via inline
+ * style, so they stay as raw hex here. */
 :root {
   --bg:            #1a1a1a;
   --fg:            #ddd;
-  --muted:         #777;
+  --muted:         var(--fg-muted, #777);
   --border:        #333;
-  --header-bg:     #222;
-  --bar-track:     #2a2a2a;
+  --header-bg:     var(--bg-elevated, #222);
+  --bar-track:     var(--border, #2a2a2a);
   --bar-unknown:   transparent;
-  --bar-unknown-stroke: #444;
+  --bar-unknown-stroke: var(--fg-muted, #444);
 
-  --hp-good:       #4ade80;
-  --hp-mid:        #facc15;
-  --hp-low:        #fb923c;
-  --hp-crit:       #ef4444;
+  --hp-good:       var(--ansi-10,  #4ade80);
+  --hp-mid:        var(--ansi-11,  #facc15);
+  --hp-low:        var(--ansi-9,   #fb923c);
+  --hp-crit:       var(--error-fg, #ef4444);
 
-  --gp-fill:       #60a5fa;
+  --gp-fill:       var(--link,     #60a5fa);
 
   --row-pad:       6px;
   --bar-height:    6px;
-  --self-tag:      #88aaff;
-  --ghost-tag:     #aaa;
+  --self-tag:      var(--link,     #88aaff);
+  --ghost-tag:     var(--fg-muted, #aaa);
 }
 
 html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font: 12px/1.35 ui-monospace, monospace; }
@@ -56,7 +63,7 @@ body {
   align-items: center;
   justify-content: center;
 }
-.refresh:hover { background: #2a2a2a; }
+.refresh:hover { background: var(--border, #2a2a2a); }
 .refresh[hidden] { display: none; }
 .refresh.pending .refresh-icon { animation: pulse 0.6s ease-out; }
 @keyframes pulse {
@@ -78,7 +85,7 @@ body {
 
 .roster { list-style: none; padding: 0; margin: 0; }
 .roster[hidden] { display: none; }
-.row { padding: var(--row-pad) 0; border-bottom: 1px solid #222; }
+.row { padding: var(--row-pad) 0; border-bottom: 1px solid var(--border, #222); }
 .row:last-child { border-bottom: 0; }
 .row.ghost { opacity: 0.4; }
 
@@ -117,19 +124,22 @@ body {
 /* ===== Shield pills ===== */
 
 :root {
-  --pill-fg-off:    #444;
+  --pill-fg-off:    var(--fg-muted, #444);
   --pill-bg-off:    transparent;
-  --pill-border-off:#333;
-  --pill-fg-on:     #fff;
-  --pill-bg-on:     #3a3a3a;
-  --pill-border-on: #555;
+  --pill-border-off: var(--border, #333);
+  --pill-fg-on:     var(--fg, #fff);
+  --pill-bg-on:     color-mix(in srgb, var(--fg, #fff) 12%, transparent);
+  --pill-border-on: var(--fg-muted, #555);
 
-  /* TPA glow ladder — mirrors magic plugin's TPA_PERCENT. */
-  --tpa-100-bg: #facc15; --tpa-100-fg: #1a1a1a;
-  --tpa-80-bg:  #b91c1c; --tpa-80-fg:  #fff;
-  --tpa-60-bg:  #ef4444; --tpa-60-fg:  #fff;
-  --tpa-40-bg:  #fb923c; --tpa-40-fg:  #1a1a1a;
-  --tpa-20-bg:  #facc15; --tpa-20-fg:  #1a1a1a;
+  /* TPA glow ladder — mirrors magic plugin's TPA_PERCENT. Backgrounds map to
+     ANSI theme slots so the yellow→red→orange→yellow ramp tracks the chosen
+     theme; foregrounds stay fixed because they're chosen for contrast against
+     the bg's lightness, not theme decoration. */
+  --tpa-100-bg: var(--ansi-11, #facc15); --tpa-100-fg: #1a1a1a;
+  --tpa-80-bg:  var(--ansi-1,  #b91c1c); --tpa-80-fg:  #fff;
+  --tpa-60-bg:  var(--ansi-9,  #ef4444); --tpa-60-fg:  #fff;
+  --tpa-40-bg:  var(--ansi-3,  #fb923c); --tpa-40-fg:  #1a1a1a;
+  --tpa-20-bg:  var(--ansi-11, #facc15); --tpa-20-fg:  #1a1a1a;
 }
 
 .shields {
