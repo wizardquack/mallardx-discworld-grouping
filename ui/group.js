@@ -18,8 +18,8 @@ function hpClass(hp) {
   return "crit";
 }
 
-const SHIELD_TYPES  = ["tpa", "ccc", "eff", "bug", "ms"];
-const SHIELD_LABEL = { tpa: "TPA", ccc: "CCC", eff: "EFF", bug: "BUG", ms: "MS" };
+const SHIELD_TYPES  = ["tpa", "eff", "ccc", "bug", "ms"];
+const SHIELD_LABEL = { tpa: "TPA", eff: "EFF", ccc: "CCC", bug: "BUG", ms: "MS" };
 
 const TPA_GLOW_TITLE = {
   invisible:           "invisible",
