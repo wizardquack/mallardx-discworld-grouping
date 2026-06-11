@@ -121,15 +121,19 @@ body {
 .bar.hp.crit .fill { background: var(--hp-crit); }
 .bar.gp .fill { background: var(--gp-fill); }
 
-/* ===== Shield pills ===== */
+/* ===== Shield chips ===== */
 
+/* Shared visual language with the discworld-vitals plugin: rectangular
+   rounded-rect chips, color-mixed green tint for the "up" state, neutral
+   outline for "off". Sizing stays compact (14px height, 9px font) so the
+   per-member row footprint matches the previous pill layout. */
 :root {
-  --pill-fg-off:    var(--fg-muted, #444);
-  --pill-bg-off:    transparent;
-  --pill-border-off: var(--border, #333);
-  --pill-fg-on:     var(--fg, #fff);
-  --pill-bg-on:     color-mix(in srgb, var(--fg, #fff) 12%, transparent);
-  --pill-border-on: var(--fg-muted, #555);
+  --chip-off-bg:     transparent;
+  --chip-off-border: var(--border, #333);
+  --chip-off-fg:     var(--fg-muted, #555);
+  --chip-up-bg:      color-mix(in srgb, var(--ansi-10, #4ade80) 18%, transparent);
+  --chip-up-border:  color-mix(in srgb, var(--ansi-10, #4ade80) 45%, transparent);
+  --chip-up-fg:      var(--fg, #e8e8e8);
 
   /* TPA glow ladder — mirrors magic plugin's TPA_PERCENT. Backgrounds map to
      ANSI theme slots so the yellow→red→orange→yellow ramp tracks the chosen
@@ -144,30 +148,33 @@ body {
 
 .shields {
   display: flex;
-  gap: 3px;
+  gap: 4px;
   margin-top: 4px;
 }
 
-.pill {
-  flex: 1;
+.chip {
+  flex: 1 1 0;
   height: 14px;
-  border-radius: 7px;
-  border: 1px solid var(--pill-border-off);
-  color: var(--pill-fg-off);
-  background: var(--pill-bg-off);
-  font: bold 9px/13px ui-monospace, monospace;
-  text-align: center;
+  border-radius: 3px;
+  border: 1px solid var(--chip-off-border);
+  color: var(--chip-off-fg);
+  background: var(--chip-off-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 9px/1 ui-monospace, monospace;
+  letter-spacing: 0.08em;
   cursor: default;
 }
 
-.pill.on {
-  color:        var(--pill-fg-on);
-  background:   var(--pill-bg-on);
-  border-color: var(--pill-border-on);
+.chip.up {
+  color:        var(--chip-up-fg);
+  background:   var(--chip-up-bg);
+  border-color: var(--chip-up-border);
 }
 
-.pill.tpa-100 { color: var(--tpa-100-fg); background: var(--tpa-100-bg); border-color: var(--tpa-100-bg); }
-.pill.tpa-80  { color: var(--tpa-80-fg);  background: var(--tpa-80-bg);  border-color: var(--tpa-80-bg);  }
-.pill.tpa-60  { color: var(--tpa-60-fg);  background: var(--tpa-60-bg);  border-color: var(--tpa-60-bg);  }
-.pill.tpa-40  { color: var(--tpa-40-fg);  background: var(--tpa-40-bg);  border-color: var(--tpa-40-bg);  }
-.pill.tpa-20  { color: var(--tpa-20-fg);  background: var(--tpa-20-bg);  border-color: var(--tpa-20-bg);  }
+.chip.tpa-100 { color: var(--tpa-100-fg); background: var(--tpa-100-bg); border-color: var(--tpa-100-bg); }
+.chip.tpa-80  { color: var(--tpa-80-fg);  background: var(--tpa-80-bg);  border-color: var(--tpa-80-bg);  }
+.chip.tpa-60  { color: var(--tpa-60-fg);  background: var(--tpa-60-bg);  border-color: var(--tpa-60-bg);  }
+.chip.tpa-40  { color: var(--tpa-40-fg);  background: var(--tpa-40-bg);  border-color: var(--tpa-40-bg);  }
+.chip.tpa-20  { color: var(--tpa-20-fg);  background: var(--tpa-20-bg);  border-color: var(--tpa-20-bg);  }

@@ -91,18 +91,18 @@ function tooltipFor(type, state) {
   return "";
 }
 
-function makeShieldPill(type, state) {
-  const pill = document.createElement("span");
-  pill.classList.add("pill", type);
-  pill.textContent = SHIELD_LABEL[type];
-  pill.title = tooltipFor(type, state);
-  if (!state || !state.up) return pill;
+function makeShieldChip(type, state) {
+  const chip = document.createElement("span");
+  chip.classList.add("chip", type);
+  chip.textContent = SHIELD_LABEL[type];
+  chip.title = tooltipFor(type, state);
+  if (!state || !state.up) return chip;
   if (type === "tpa" && state.percent != null) {
     const cls = tpaPercentClass(state.percent);
-    if (cls) { pill.classList.add(cls); return pill; }
+    if (cls) { chip.classList.add(cls); return chip; }
   }
-  pill.classList.add("on");
-  return pill;
+  chip.classList.add("up");
+  return chip;
 }
 
 function makeBar(kind, value) {
@@ -155,7 +155,7 @@ function renderRow(m) {
   const shieldRow = document.createElement("div");
   shieldRow.className = "shields";
   for (const t of SHIELD_TYPES) {
-    shieldRow.appendChild(makeShieldPill(t, shields[t]));
+    shieldRow.appendChild(makeShieldChip(t, shields[t]));
   }
   li.appendChild(shieldRow);
   return li;
