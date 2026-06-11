@@ -20,14 +20,16 @@ function hpClass(hp) {
 
 const SHIELD_TYPES  = ["tpa", "eff", "ccc", "bug", "ms"];
 const SHIELD_LABEL = { tpa: "TPA", eff: "EFF", ccc: "CCC", bug: "BUG", ms: "MS" };
-
-const TPA_GLOW_TITLE = {
-  invisible:           "invisible",
-  "dull red":          "dull red",
-  "bright red":        "bright red",
-  "wobbling orange":   "wobbling orange",
-  "flickering yellow": "flickering yellow",
+const SHIELD_TITLE = {
+  tpa: "Transcendent Pneumatic Alleviator",
+  eff: "Endorphin's Floating Friend",
+  ccc: "Chrenedict's Corporeal Covering",
+  bug: "Bugshield",
+  ms:  "Major Shield",
 };
+
+const STATUS_LABEL = { up: "Up", down: "Down", unknown: "Unknown" };
+const STATUS_COLOR = { up: "ok", down: "bad", unknown: "muted" };
 
 function ucfirstWord(s) {
   if (typeof s !== "string" || s.length === 0) return s;
@@ -43,59 +45,48 @@ function tpaPercentClass(percent) {
   return "";
 }
 
-function tooltipFor(type, state) {
-  const up = state && state.up;
+function shieldStatus(state) {
+  if (!state) return "unknown";
+  return state.up ? "up" : "down";
+}
+
+function shieldDetailRows(type, state) {
+  if (!state || !state.up) return [];
+  const rows = [];
   if (type === "tpa") {
-    if (up && state.glow && state.percent != null) {
-      const glow = TPA_GLOW_TITLE[state.glow] || state.glow;
-      return `Transcendent Pneumatic Alleviator — ${glow} glow, ${state.percent}%`;
-    }
-    if (up) return "Transcendent Pneumatic Alleviator (impact shield)";
-    return "Transcendent Pneumatic Alleviator (impact shield) — down";
+    if (state.glow)            rows.push({ label: "Glow",   value: state.glow });
+    if (state.percent != null) rows.push({ label: "Charge", value: `${state.percent}%` });
+  } else if (type === "eff") {
+    if (state.item) rows.push({ label: "Item", value: state.item });
+  } else if (type === "ccc") {
+    if (state.substance)        rows.push({ label: "Substance", value: ucfirstWord(state.substance) });
+    if (state.strength != null) rows.push({ label: "Strength",  value: `${state.strength}/5` });
+  } else if (type === "bug") {
+    if (state.size) rows.push({ label: "Size",    value: ucfirstWord(state.size) });
+    if (state.bugs) rows.push({ label: "Insects", value: state.bugs });
+  } else if (type === "ms") {
+    if (state.deity)                                  rows.push({ label: "Deity",    value: state.deity });
+    if (state.strength && state.strength !== "")      rows.push({ label: "Strength", value: state.strength });
   }
-  if (type === "eff") {
-    if (up && state.item) return `Endorphin's Floating Friend — ${state.item}`;
-    if (up) return "Endorphin's Floating Friend (intercept shield)";
-    return "Endorphin's Floating Friend (intercept shield) — down";
-  }
-  if (type === "ccc") {
-    if (up) {
-      const sub = state.substance ? ucfirstWord(state.substance) : null;
-      const str = state.strength != null ? `${state.strength}/5` : null;
-      const detail = [sub, str].filter(Boolean).join(", ");
-      if (detail) return `Chrenedict's Corporeal Covering — ${detail}`;
-      return "Chrenedict's Corporeal Covering (skin shield)";
-    }
-    return "Chrenedict's Corporeal Covering (skin shield) — down";
-  }
-  if (type === "bug") {
-    if (up) {
-      const size = state.size ? ucfirstWord(state.size) : null;
-      const bugs = state.bugs || null;
-      const detail = [size, bugs].filter(Boolean).join(" of ");
-      if (detail) return `Bugshield — ${detail}`;
-      return "Bugshield (insect cloud)";
-    }
-    return "Bugshield (insect cloud) — down";
-  }
-  if (type === "ms") {
-    if (up) {
-      const deity = state.deity || null;
-      const str   = state.strength && state.strength !== "" ? state.strength : null;
-      if (deity && str) return `Major Shield — ${deity} (${str})`;
-      if (deity)        return `Major Shield — ${deity}`;
-      return "Major Shield (divine protection)";
-    }
-    return "Major Shield (divine protection) — down";
-  }
-  return "";
+  return rows;
+}
+
+function tooltipPayload(type, state) {
+  const status = shieldStatus(state);
+  return {
+    title: SHIELD_TITLE[type],
+    rows: [
+      { label: "Status", value: STATUS_LABEL[status], valueColor: STATUS_COLOR[status] },
+      ...shieldDetailRows(type, state),
+    ],
+  };
 }
 
 function makeShieldChip(type, state) {
   const chip = document.createElement("span");
   chip.classList.add("chip", type);
   chip.textContent = SHIELD_LABEL[type];
-  chip.title = tooltipFor(type, state);
+  chip.setAttribute("data-mallard-tooltip", JSON.stringify(tooltipPayload(type, state)));
   if (!state || !state.up) return chip;
   if (type === "tpa" && state.percent != null) {
     const cls = tpaPercentClass(state.percent);
