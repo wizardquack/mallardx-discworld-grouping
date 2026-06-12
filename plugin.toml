@@ -1,6 +1,6 @@
 id = "net.mallard.discworld-grouping"
 name = "Discworld Grouping"
-version = "0.2.0"
+version = "0.2.1"
 description = "A grouping panel showing group roster with HP/GP/shielding info."
 language = "lua"
 entry = "src/main.lua"
