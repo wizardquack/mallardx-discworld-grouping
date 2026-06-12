@@ -23,3 +23,8 @@ per-member HP/GP bars in a compact panel.
 This plugin has an optional dependency on the discworld-magic plugin.
 If you have it, you will get richer information on shielding for each
 group member.
+
+## Credit
+
+Many thanks to Quow, whose work on similar plugins was invaluable in
+designing and building this one.
