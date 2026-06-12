@@ -71,7 +71,7 @@ body {
   50%  { transform: scale(1.25); }
   100% { transform: scale(1); }
 }
-.refresh-icon { font-size: 12px; line-height: 1; }
+.refresh-icon { width: 14px; height: 14px; display: block; }
 .refresh + .refresh, .refresh-shields + .refresh { margin-left: 4px; }
 
 .body {
